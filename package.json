@@ -27,7 +27,7 @@
     "serverless-prune-plugin": "^1.4.4",
     "serverless-reqvalidator-plugin": "^1.0.4",
     "trilateration": "0.0.1",
-    "uuid": "^3.3.3"
+    "uuid": "^3.4.0"
   },
   "devDependencies": {
     "aws-sdk-mock": "^5.1.0",

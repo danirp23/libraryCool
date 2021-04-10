@@ -1,4 +1,4 @@
-service: quasar-ms
+service: libraryCool-ms
 
 plugins:
   - serverless-reqvalidator-plugin
@@ -20,14 +20,54 @@ provider:
   memorySize: 512
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
-
+    AUTOR_TABLE: dev-autors
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+          - dynamodb:Query
+          - dynamodb:*
+      Resource:
+        - "*"
+    
 
 functions:
-  
+  autor:
+    handler:  src/autor/handler.Handler
+    description: Microservice for 
+    events:
+      - http:
+          path: /v1/autor
+          method: get
+          cors: true
+          integration: lambda
+          response: ${self:custom.customHeaders}
+      - http:
+          path: /v1/autor
+          method: post
+          cors: true
+          integration: lambda
+          response: ${self:custom.customHeaders}
 
 
 resources:
   Description: Microservices to 
+  Resources:
+    AutorTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: "id"
+            AttributeType: "S"
+        KeySchema:
+          -
+            AttributeName: "id"
+            KeyType: "HASH"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.AUTOR_TABLE}
 
 custom:
     customHeaders:
